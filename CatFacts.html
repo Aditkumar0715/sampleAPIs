@@ -8,22 +8,32 @@
 </head>
 <body>
   <h1>Random Cat Facts</h1>
-
+  <button id="next">Next</button>
+  <img id="load" src="https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif" width="200px" alt="Loading...">
   <script>
     console.log('Here in the console');
-let body = document.querySelector('body');
+    let body = document.querySelector('body');
+    let loader = document.getElementById('load');
+    let next = document.getElementById('next');
+    next.addEventListener('click',()=>{
+      window.location.reload();
+    })
+    loader.style.display = 'none';
 
     apitest();
 
     async function apitest() {
-
+      next.disabled = true;
+      loader.style.display = 'block';
       try {
         const fact = await fetch('https://catfact.ninja/fact');
         let output = await fact.json();
         console.log('Succeccfully fetched');
         let element = document.createElement('h3');
         element.innerHTML = output.fact;
+        loader.style.display = 'none';
         body.appendChild(element);
+        next.disabled = false;
 
       } catch (error) {
         console.log("error occured : ", error);
