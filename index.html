@@ -13,11 +13,13 @@
       <input type="text" id="name">
       <button id="submit">Get data</button>
       <button id="reset">Reset</button>
+      <img id="load" src="https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif" width="200px" alt="Loading...">
   </fieldset>
   <h2><a href="CatsFacts.html">CatsFacts</a></h2>
   <script>
     let inp = document.getElementById('name');
     let submit = document.getElementById('submit');
+    let loader = document.getElementById('load');
     let name;
     let field = document.getElementById('field');
     let display = document.createElement('div');
@@ -25,22 +27,24 @@
     let outNat;
     let outAge;
     let outGen;
+    loader.style.display = 'none';
     inp.addEventListener('change',()=>{
       name = inp.value;
     })
     submit.addEventListener('click',()=>{
-      submit.setAttribute('disabled',true)
+      submit.disabled=true;
+      loader.style.display = 'block';
       if(name){
         console.log(name);
         display.innerHTML = "";
         Guess();
-
       }
       else{
         alert('provide some name');
       }
     })
     async function Guess(){
+      loader.style.display = 'block';
       try {
         let resAge = await fetch(`https://api.agify.io?name=${name}`);
         // let outAge = await resAge.json();
@@ -66,6 +70,8 @@
       } catch (error) {
         console.log("An unexpected error occured : ", error);
       }
+      loader.style.display = 'none'
+      submit.disabled=false;
       field.appendChild(display)
 
       }
@@ -73,6 +79,8 @@
     reset.addEventListener('click',()=>{
       inp.value="";
       display.innerHTML = "";
+      loader.style.display = 'none';
+      submit.disabled=false;
     })
   </script>
 </body>
