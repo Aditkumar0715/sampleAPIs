@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Cat Facts</title>
+  <script src="https://kit.fontawesome.com/0a7abd668c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1>Random Cat Facts</h1>
+
+  <script>
+    console.log('Here in the console');
+let body = document.querySelector('body');
+
+    apitest();
+
+    async function apitest() {
+
+      try {
+        const fact = await fetch('https://catfact.ninja/fact');
+        let output = await fact.json();
+        console.log('Succeccfully fetched');
+        let element = document.createElement('h3');
+        element.innerHTML = output.fact;
+        body.appendChild(element);
+
+      } catch (error) {
+        console.log("error occured : ", error);
+        return
+      }
+    }
+  </script>
+</body>
+</html>

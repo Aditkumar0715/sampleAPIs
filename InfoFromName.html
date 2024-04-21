@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age form given Name</title>
+</head>
+<body>
+  <fieldset id="field">
+    <legend>Gussing the age based on age</legend>
+
+      <label for="name">Enter your Name and lets see how old are you</label>
+      <input type="text" id="name">
+      <button id="submit">Get data</button>
+      <button id="reset">Reset</button>
+  </fieldset>
+
+  <script>
+    let inp = document.getElementById('name');
+    let submit = document.getElementById('submit');
+    let name;
+    let field = document.getElementById('field');
+    let display = document.createElement('div');
+
+    let outNat;
+    let outAge;
+    let outGen;
+    inp.addEventListener('change',()=>{
+      name = inp.value;
+    })
+    submit.addEventListener('click',()=>{
+      submit.setAttribute('disabled',true)
+      if(name){
+        console.log(name);
+        display.innerHTML = "";
+        Guess();
+
+      }
+      else{
+        alert('provide some name');
+      }
+    })
+    async function Guess(){
+      try {
+        let resAge = await fetch(`https://api.agify.io?name=${name}`);
+        // let outAge = await resAge.json();
+        outAge = await resAge.json();
+        console.log(outAge.age);
+        display.innerHTML+=`The guessed age is ${outAge.age}`;
+        let resGen = await fetch(`https://api.genderize.io?name=${name}`);
+        // let outGen = await resGen.json();
+        outGen = await resGen.json();
+        console.log(outGen.gender);
+        display.innerHTML+=`<br> The guessed Gender is ${outGen.gender}`;
+
+        let resNat = await fetch(`https://api.nationalize.io?name=${name}`);
+        // let outNat = await resNat.json();
+        outNat = await resNat.json();
+        console.log(outNat.country);
+
+        for (i=0 ; i< outNat.country.length; i++) {
+
+          display.innerHTML+=`<br> The guessed Nationality is ${outNat.country[i].country_id} and the probability is ${outNat.country[i].probability}`;
+        }
+
+      } catch (error) {
+        console.log("An unexpected error occured : ", error);
+      }
+      field.appendChild(display)
+
+      }
+
+    reset.addEventListener('click',()=>{
+      inp.value="";
+      display.innerHTML = "";
+    })
+  </script>
+</body>
+</html>
